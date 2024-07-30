@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Carrera Matemática</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #game-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+        h1 {
+            color: #333;
+        }
+        #coyote-message {
+            font-style: italic;
+            margin: 20px 0;
+            color: #666;
+        }
+        #user-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        #submit-button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        #feedback {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>La Carrera Matemática</h1>
+        <p id="station">Estación: <span id="station-number">1</span></p>
+        <p id="coyote-message"></p>
+        <input type="text" id="user-input" placeholder="Tu respuesta aquí">
+        <button id="submit-button">Enviar</button>
+        <p id="feedback"></p>
+    </div>
+
+    <script>
+        const stations = [
+            {
+                question: "¡Hola amigo! Para avanzar, dime si 0,8 es un número racional o irracional y por qué.",
+                answer: "racional",
+                hint: "Piensa si puedes expresarlo como fracción."
+            },
+            {
+                question: "¡Bien hecho! Ahora, calcula rápido: (-3) × (-4) =",
+                answer: "12",
+                hint: "Recuerda, negativo por negativo es positivo."
+            },
+            {
+                question: "¡Excelente! Resuelve esta operación: 2,1 × 10 =",
+                answer: "21",
+                hint: "Al multiplicar por 10, mueve la coma una posición a la derecha."
+            },
+            {
+                question: "¡Casi llegamos! Resuelve: 12 + [35 - 2 × (15 × 2 - 27)] - 7 =",
+                answer: "34",
+                hint: "Sigue el orden correcto de operaciones: paréntesis, multiplicación/división, suma/resta."
+            },
+            {
+                question: "¡Última prueba! Si mezclo 600 Tn de soja H1 con 700 Tn de soja H2, pero reservo ¼ de H2 para futuras mezclas, ¿cuántas toneladas obtengo en total?",
+                answer: "1125",
+                hint: "Primero calcula cuánto es ¼ de 700, réstalo de 700, y luego suma ese resultado a 600."
+            }
+        ];
+
+        let currentStation = 0;
+
+        function updateStation() {
+            document.getElementById('station-number').textContent = currentStation + 1;
+            document.getElementById('coyote-message').textContent = stations[currentStation].question;
+            document.getElementById('user-input').value = '';
+            document.getElementById('feedback').textContent = '';
+        }
+
+        function checkAnswer() {
+            const userAnswer = document.getElementById('user-input').value.toLowerCase().trim();
+            const feedbackElement = document.getElementById('feedback');
+            if (userAnswer === stations[currentStation].answer) {
+                currentStation++;
+                if (currentStation < stations.length) {
+                    feedbackElement.textContent = '¡Correcto! Avanzamos a la siguiente estación.';
+                    feedbackElement.className = ' ';
+                    setTimeout(updateStation, 1500);
+                } else {
+                    feedbackElement.textContent = '¡Felicidades! Has completado todas las estaciones.';
+                    feedbackElement.className = ' ';
+                    document.getElementById('user-input').style.display = 'none';
+                    document.getElementById('submit-button').style.display = 'none';
+                }
+            } else {
+                feedback.textContent = 'Incorrecto. Pista: ' + stations[currentStation].hint;
+                feedbackElement.className = 'error';
+            }
+        }
+
+        document.getElementById('submit-button').addEventListener('click', checkAnswer);
+        document.getElementById('user-input').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+
+        updateStation();
+    </script>
+</body>
+</html>
